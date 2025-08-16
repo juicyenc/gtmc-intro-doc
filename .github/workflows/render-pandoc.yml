@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended fonts-firacode fonts-noto-serif
+          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
 
       - name: Build Documentation
         run: |
