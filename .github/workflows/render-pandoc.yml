@@ -32,6 +32,7 @@ jobs:
           sudo apt install ./pandoc.deb
       - name: Build documentent
         run: |
+          echo '::group::Install TeX Live'
           pushd /tmp
           curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar xf -
@@ -64,10 +65,15 @@ jobs:
           echo "::debug::Platform: \"$platform\""
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
           popd
+          echo '::endgroup::'
+          echo '::group::Install TeX Packages'
           tlmgr init-usertree
           sudo $(which tlmgr) update --all || echo ''
           sudo $(which tlmgr) install pdfcol etoolbox environ tools pgf tikzfill tcolorbox xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
+          echo '::endgroup::'
+          echo '::group::Run pandoc'
           pandoc --defaults ./scripts/pandoc-opts.yml
+          echo '::endgroup::'
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
