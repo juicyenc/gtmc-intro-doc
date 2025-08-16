@@ -1,19 +1,14 @@
 name: Build Docs(Pandoc)
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Install dependencies
         run: |
@@ -26,7 +21,7 @@ jobs:
           ./scripts/render-pandoc.sh
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: docs
-          path: build/
+          name: output.pdf
+          path: pdf/*
