@@ -17,8 +17,7 @@ jobs:
 
       - name: Build Documentation
         run: |
-          chmod +x scripts/render-pandoc.sh
-          ./scripts/render-pandoc.sh
+          pandoc --defaults ./scripts/pandoc-opts.yml
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
