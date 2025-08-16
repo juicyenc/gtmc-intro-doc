@@ -54,7 +54,7 @@ jobs:
           tlmgr init-usertree
           sudo $(which tlmgr) update --all || echo ''
           sudo $(which tlmgr) install xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
-          pandoc --defaults ./scripts/pandoc-opts.yml
+          pandoc --defaults ./scripts/pandoc-opts.yml --lua-filter ./scripts/fix-internal-links.lua
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
