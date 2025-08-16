@@ -17,44 +17,49 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y coreutils grep curl gzip tar perl pandoc fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
-      - name: Build documentent
-        run: |
-          pushd /tmp
-          curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-          zcat < install-tl-unx.tar.gz | tar xf -
-          rm install-tl-unx.tar.gz
-          cd install-tl-2*
-          sudo perl ./install-tl --no-interaction --scheme=basic
-          install_dir=$(ls -d /tmp/install-tl-* 2>/dev/null | sort -V | tail -n 1)
-          echo "::debug::Install dir: \"$install_dir\""
-          year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d{4}')
-          echo "::debug::Year: \"$year\""
-          platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
-          echo "::debug::Platform: \"$platform\""
-          case $platform in
-            "x86_64-linux")
-              platform="x86_64-linux"
-            ;;
-            "i686-linux")
-              platform="i386-linux"
-            ;;
-            "x86_64-darwin")
-              platform="universal-darwin"
-            ;;
-            "arm64-darwin")
-              platform="arm64-darwin"
-            ;;
-            *)
-              exit 2
-            ;;
-          esac
-          echo "::debug::Platform: \"$platform\""
-          export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
-          popd
-          tlmgr init-usertree
-          sudo $(which tlmgr) update --all || echo ''
-          sudo $(which tlmgr) install xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
-          pandoc --defaults ./scripts/pandoc-opts.yml --lua-filter ./scripts/fix-internal-links.lua
+      # - name: Build documentent
+      #   run: |
+      #     pushd /tmp
+      #     curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+      #     zcat < install-tl-unx.tar.gz | tar xf -
+      #     rm install-tl-unx.tar.gz
+      #     cd install-tl-2*
+      #     sudo perl ./install-tl --no-interaction --scheme=basic
+      #     install_dir=$(ls -d /tmp/install-tl-* 2>/dev/null | sort -V | tail -n 1)
+      #     echo "::debug::Install dir: \"$install_dir\""
+      #     year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d{4}')
+      #     echo "::debug::Year: \"$year\""
+      #     platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
+      #     echo "::debug::Platform: \"$platform\""
+      #     case $platform in
+      #       "x86_64-linux")
+      #         platform="x86_64-linux"
+      #       ;;
+      #       "i686-linux")
+      #         platform="i386-linux"
+      #       ;;
+      #       "x86_64-darwin")
+      #         platform="universal-darwin"
+      #       ;;
+      #       "arm64-darwin")
+      #         platform="arm64-darwin"
+      #       ;;
+      #       *)
+      #         exit 2
+      #       ;;
+      #     esac
+      #     echo "::debug::Platform: \"$platform\""
+      #     export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
+      #     popd
+      #     tlmgr init-usertree
+      #     sudo $(which tlmgr) update --all || echo ''
+      #     sudo $(which tlmgr) install xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
+      #     pandoc --defaults ./scripts/pandoc-opts.yml --lua-filter ./scripts/fix-internal-links.lua
+
+      - name: Build PDF with pandoc
+        uses: docker://pandoc/latex:3.7
+        with:
+          args: --defaults ./scripts/pandoc-opts.yml --lua-filter ./scripts/fix-internal-links.lua
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
