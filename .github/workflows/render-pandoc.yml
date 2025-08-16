@@ -21,12 +21,12 @@ jobs:
           zcat < install-tl-unx.tar.gz | tar xf -
           cd install-tl-2*
           sudo perl ./install-tl --no-interaction --scheme=basic
-          install_dir=$(ls -d /usr/local/texlive/install-tl-* 2>/dev/null | sort -V | tail -n 1)
-          echo $install_dir
+          install_dir=$(ls -d /tmp/install-tl-* 2>/dev/null | sort -V | tail -n 1)
+          echo "Install dir: \"$install_dir\""
           year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d+')
-          echo $year
+          echo "Year: \"$year\""
           platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
-          echo $platform
+          echo "Platform: \"$platform\""
           case $platform in
             "x86_64-linux")
               platform="x86_64-linux"
@@ -41,10 +41,10 @@ jobs:
               platform="arm64-darwin"
             ;;
             *)
-              exit 1
+              exit 2
             ;;
           esac
-          echo $platform
+          echo "Platform: \"$platform\""
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
       - name: Install tex packages
         run: |
