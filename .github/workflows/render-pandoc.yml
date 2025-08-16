@@ -24,7 +24,7 @@ jobs:
           sudo perl ./install-tl --no-interaction --scheme=basic
           install_dir=$(ls -d /tmp/install-tl-* 2>/dev/null | sort -V | tail -n 1)
           echo "Install dir: \"$install_dir\""
-          year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d+')
+          year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d{4}')
           echo "Year: \"$year\""
           platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
           echo "Platform: \"$platform\""
