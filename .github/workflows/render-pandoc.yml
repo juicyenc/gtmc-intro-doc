@@ -43,7 +43,7 @@ jobs:
           esac
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
       - name: Install tex packages
-      - run: |
+        run: |
           tlmgr init-usertree
           tlmgr update --all || echo ''
           tlmgr install xetex xelatex amsfonts amsmath lm unicode-math iftex listings fancyvrb longtable booktabs multirow graphicx bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper footnote
