@@ -23,5 +23,5 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: output.pdf
+          name: PDF
           path: pdf/*
