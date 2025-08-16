@@ -14,7 +14,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y coreutils grep curl gzip tar perl pandoc fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
-      - name: Install texlive
+      - name: Build documentent
         run: |
           cd /tmp
           curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
@@ -47,14 +47,9 @@ jobs:
           esac
           echo "Platform: \"$platform\""
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
-      - name: Install tex packages
-        run: |
           tlmgr init-usertree
           tlmgr update --all || echo ''
           tlmgr install xetex xelatex amsfonts amsmath lm unicode-math iftex listings fancyvrb longtable booktabs multirow graphicx bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper footnote
-
-      - name: Build Documentation
-        run: |
           pandoc --defaults ./scripts/pandoc-opts.yml
 
       - name: Upload Build Artifact
