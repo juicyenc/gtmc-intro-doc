@@ -48,8 +48,8 @@ jobs:
           echo "Platform: \"$platform\""
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
           tlmgr init-usertree
-          sudo tlmgr update --all || echo ''
-          sudo tlmgr install xetex xelatex amsfonts amsmath lm unicode-math iftex listings fancyvrb longtable booktabs multirow graphicx bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper footnote
+          sudo -E tlmgr update --all || echo ''
+          sudo -E tlmgr install xetex xelatex amsfonts amsmath lm unicode-math iftex listings fancyvrb longtable booktabs multirow graphicx bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper footnote
           pandoc --defaults ./scripts/pandoc-opts.yml
 
       - name: Upload Build Artifact
