@@ -1,0 +1,6 @@
+from: commonmark+alerts+emoji+raw_html+pipe_tables+footnotes+task_lists+strikeout
+to: pdf
+pdf-engine: xelatex
+metadata-file: ./scripts/pandoc-metadata.yml
+input-file: Minecraft游戏入门&GTIIT服务器介绍.md
+output-file: pdf/Minecraft游戏入门&GTIIT服务器介绍.pdf
