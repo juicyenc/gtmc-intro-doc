@@ -1,6 +1,12 @@
-from: commonmark+alerts+emoji+raw_html+pipe_tables+footnotes+task_lists+strikeout
+#from: commonmark+alerts+emoji+raw_html+pipe_tables+footnotes+task_lists+strikeout
+from: gfm-autolink_bare_uris
 to: pdf
 pdf-engine: xelatex
 metadata-file: ./scripts/pandoc-metadata.yml
 input-file: Minecraft游戏入门&GTIIT服务器介绍.md
 output-file: pdf/Minecraft游戏入门&GTIIT服务器介绍.pdf
+filters:
+- scripts/fix-internal-links.lua
+- scripts/blockquote.lua
+- scripts/transform-right-align.lua
+template: scripts/pandoc-template.tex

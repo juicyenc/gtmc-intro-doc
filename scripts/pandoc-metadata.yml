@@ -5,13 +5,14 @@ CJKmainfont: 'Noto Serif CJK SC'
 geometry:
 - margin=1in
 colorlinks: true
+linkcolor: Blue
+urlcolor: Maroon
+toccolor: Blue
 urlstyle: tt
 toc: false
 hyperrefoptions:
 - colorlinks
 - linktoc=all
-- linkcolor=blue
-- urlcolor=brown
 - bookmarks=true
 - CJKbookmarks=true
 #title: Minecraft游戏入门&GTIIT服务器介绍
