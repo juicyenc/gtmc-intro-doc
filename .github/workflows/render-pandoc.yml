@@ -16,18 +16,18 @@ jobs:
           sudo apt-get install -y coreutils grep curl gzip tar perl pandoc fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
       - name: Build documentent
         run: |
-          cd /tmp
+          pushd /tmp
           curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar xf -
           rm install-tl-unx.tar.gz
           cd install-tl-2*
           sudo perl ./install-tl --no-interaction --scheme=basic
           install_dir=$(ls -d /tmp/install-tl-* 2>/dev/null | sort -V | tail -n 1)
-          echo "Install dir: \"$install_dir\""
+          echo "::debug::Install dir: \"$install_dir\""
           year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d{4}')
-          echo "Year: \"$year\""
+          echo "::debug::Year: \"$year\""
           platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
-          echo "Platform: \"$platform\""
+          echo "::debug::Platform: \"$platform\""
           case $platform in
             "x86_64-linux")
               platform="x86_64-linux"
@@ -45,8 +45,9 @@ jobs:
               exit 2
             ;;
           esac
-          echo "Platform: \"$platform\""
+          echo "::debug::Platform: \"$platform\""
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
+          popd
           tlmgr init-usertree
           sudo $(which tlmgr) update --all || echo ''
           sudo $(which tlmgr) install xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
