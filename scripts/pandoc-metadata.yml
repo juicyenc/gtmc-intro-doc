@@ -1,7 +1,7 @@
 lang: zh-CN
 monofont: 'Fira Code'
 monofontfallback: 'lmodern'
-CJKmainfont: 'Noto Serif SC'
+CJKmainfont: 'Noto Serif CJK SC'
 geometry:
 - margin=1in
 colorlinks: true
