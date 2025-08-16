@@ -1,4 +1,4 @@
-from: markdown+mark+smart+gfm_auto_identifiers+raw_tex+footnotes+emoji+implicit_header_references+task_lists+table_captions+pipe_tables+strikeout+tex_math_single_backslash
+from: commonmark+alerts+emoji+raw_html+pipe_tables+footnotes+task_lists+strikeout
 to: pdf
 pdf-engine: xelatex
 metadata-file: ./scripts/pandoc-metadata.yml

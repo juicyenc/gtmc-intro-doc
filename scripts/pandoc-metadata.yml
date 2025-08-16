@@ -1,14 +1,14 @@
 lang: zh-CN
 monofont: 'Fira Code'
 monofontfallback: 'lmodern'
-CJKmainfont: 'Noto Serif CJK SC'
+CJKmainfont: 'Noto Serif SC'
 geometry:
 - margin=1in
 colorlinks: true
 boxlinks: true
 linkcolor: blue
 urlstyle: tt
-toc: true
+toc: false
 hyperrefoptions:
 - colorlinks=true
 - linktoc=all
