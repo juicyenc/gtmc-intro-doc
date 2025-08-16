@@ -16,7 +16,20 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y coreutils grep curl gzip tar perl pandoc fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
+          sudo apt-get install -y coreutils grep curl gzip tar perl fonts-firacode fonts-noto-core fonts-noto-extra fonts-noto-color-emoji fonts-noto-mono fonts-noto-cjk fonts-noto-cjk-extra
+          case $(uname -m) in
+            "x86_64")
+              curl -L 'https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-amd64.deb' > pandoc.deb
+            ;;
+            "arm64")
+              curl -L 'https://github.com/jgm/pandoc/releases/download/3.7.0.2/pandoc-3.7.0.2-1-arm64.deb' > pandoc.deb
+            ;;
+            *)
+              echo "::error::unsupported architecture $(uname -m)"
+              exit 1
+            ;;
+          esac
+          sudo apt install pandoc.deb
       - name: Build documentent
         run: |
           pushd /tmp
