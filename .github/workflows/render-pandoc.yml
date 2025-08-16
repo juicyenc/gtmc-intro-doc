@@ -66,7 +66,7 @@ jobs:
           popd
           tlmgr init-usertree
           sudo $(which tlmgr) update --all || echo ''
-          sudo $(which tlmgr) install pdfcol etoolbox environ verbatim tikz pgf tikzfill tcolorbox xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
+          sudo $(which tlmgr) install pdfcol etoolbox environ tools pgf tikzfill tcolorbox xetex amsfonts amsmath lm unicode-math iftex listings fancyvrb tools booktabs multirow graphics bookmark xcolor soul  geometry setspace babel xecjk framed fontspec bidi mathspec upquote microtype csquotes natbib biblatex bibtex biber upquote parskip xurl footnotehyper mdwtools
           pandoc --defaults ./scripts/pandoc-opts.yml
 
       - name: Upload Build Artifact
