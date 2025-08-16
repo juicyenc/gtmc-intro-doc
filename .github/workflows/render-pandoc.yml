@@ -20,10 +20,13 @@ jobs:
           curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar xf -
           cd install-tl-2*
-          sudo perl ./install-tl --no-interaction --scheme=basic || echo ''
+          sudo perl ./install-tl --no-interaction --scheme=basic
           install_dir=$(ls -d /usr/local/texlive/install-tl-* 2>/dev/null | sort -V | tail -n 1)
+          echo $install_dir
           year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d+')
+          echo $year
           platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
+          echo $platform
           case $platform in
             "x86_64-linux")
               platform="x86_64-linux"
@@ -41,6 +44,7 @@ jobs:
               exit 1
             ;;
           esac
+          echo $platform
           export PATH="/usr/local/texlive/$year/bin/$platform:$PATH"
       - name: Install tex packages
         run: |
