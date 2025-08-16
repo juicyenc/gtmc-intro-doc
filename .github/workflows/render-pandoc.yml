@@ -20,7 +20,7 @@ jobs:
           curl -L -o install-tl-unx.tar.gz https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar xf -
           cd install-tl-2*
-          sudo perl ./install-tl --no-interaction --scheme=basic
+          sudo perl ./install-tl --no-interaction --scheme=basic || echo ''
           install_dir=$(ls -d /usr/local/texlive/install-tl-* 2>/dev/null | sort -V | tail -n 1)
           year=$(basename "$install_dir" | grep -oP 'install-tl-\K\d+')
           platform=$(uname -m)-$(uname -s | tr '[:upper:]' '[:lower:]') 
