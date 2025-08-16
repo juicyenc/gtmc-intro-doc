@@ -1,0 +1,32 @@
+name: Build Docs(Pandoc)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc texlive-xetex texlive-latex-extra texlive-fonts-recommended fonts-firacode fonts-noto-serif
+
+      - name: Build Documentation
+        run: |
+          chmod +x scripts/render-pandoc.sh
+          ./scripts/render-pandoc.sh
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: build/

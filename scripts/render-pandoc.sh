@@ -45,7 +45,7 @@ while IFS= read -r file; do
             mkdir -p "$(dirname "$output_file")"
             
             # Compile with pandoc
-            pandoc "$file" -o "$output_file" $pandoc_args
+            pandoc --default './scripts/pandoc-opts.yml'
         fi
     fi
 done <<< "$files"
