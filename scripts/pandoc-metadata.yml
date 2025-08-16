@@ -8,7 +8,7 @@ colorlinks: true
 boxlinks: true
 linkcolor: blue
 urlstyle: tt
-toc: true
+toc: false
 hyperrefoptions:
 - colorlinks=true
 - linktoc=all

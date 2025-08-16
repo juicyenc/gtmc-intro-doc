@@ -1,0 +1,69 @@
+I need a Pandoc Lua filter that can automatically fix broken internal links in Markdown files. These files are often created in editors like Typora, which can sometimes produce internal link formats that don't perfectly align with how Pandoc generates heading identifiers during conversion to other formats (like PDF, DOCX, or HTML).
+
+The core issue is that Pandoc has a specific way of generating IDs for headings, and if the links in the Markdown don't exactly match these generated IDs, they become broken.
+
+Here's how Pandoc typically generates heading IDs:
+
+    It takes the raw heading text.
+
+    Converts it to lowercase.
+
+    Replaces spaces with hyphens (-).
+
+    Removes most punctuation and special characters.
+
+    If multiple headings have the exact same sanitized text, Pandoc appends a unique numeric suffix (e.g., -1, -2, etc.) to subsequent duplicates. For instance, # My Section becomes my-section, and a second # My Section in the same document becomes my-section-1.
+
+Desired Filter Functionality (Two-Pass Approach):
+
+The Lua filter should operate in two conceptual passes:
+
+Pass 1: Collect Actual Pandoc-Generated Heading IDs
+
+    The filter needs to first scan the entire document to identify all heading elements (Header type in Pandoc AST).
+
+    For each heading, it should programmatically determine what its exact Pandoc-generated ID would be (following the rules above, including handling duplicates).
+
+    It should store these generated IDs in a lookup structure (e.g., a Lua table/map). The key in this lookup should be a normalized version of the heading text (e.g., my-section), and the value should be a list or table of the actual Pandoc-generated IDs for that normalized text (e.g., ["#my-section", "#my-section-1"]). This is crucial for handling duplicate headings.
+
+Pass 2: Rewrite Internal Links
+
+    After collecting all heading IDs, the filter should then iterate through all Link elements in the document's Abstract Syntax Tree (AST).
+
+    For each Link, it must check if its target (the URL part) starts with # (indicating it's an internal link).
+
+    If it's an internal link, the filter should:
+
+        Extract the raw anchor text from the link's target (e.g., if the link is [text](#Original Heading Title), extract Original Heading Title).
+
+        Normalize this extracted anchor text using the same Pandoc ID generation rules (lowercase, spaces to hyphens, remove special characters).
+
+        Attempt to find a matching ID in the lookup structure created in Pass 1.
+
+        Resolution Logic for Duplicates:
+
+            If the original link's target already includes a numeric suffix (e.g., #section-2), the filter should try to find that specific Pandoc-generated ID (#section-2).
+
+            If the original link's target does not include a suffix (e.g., #my-section), it should default to the first Pandoc-generated ID for that normalized heading (e.g., #my-section if it exists, otherwise #my-section-0 if Pandoc starts at 0 for its first duplicate, or just #my-section for the initial non-suffixed ID).
+
+        If a match is found, update the link's target (URL) property in the AST to the correct, Pandoc-compatible ID.
+
+Lua Filter Specifics:
+
+    The output should be a single, self-contained .lua script.
+
+    It should leverage Pandoc's Lua filter API (e.g., using functions like pandoc.walk_block, pandoc.walk_inline, pandoc.utils.to_identifier, or similar helper functions if needed for ID generation).
+
+    Please include clear and concise comments throughout the code to explain the logic, especially the two-pass approach and the ID resolution.
+
+Example Input Link Formats the Filter Should Handle:
+
+    [Link to My First Section](#My First Section) (Spaces and Title Case)
+
+    [Link to Another Topic](#another-topic) (Hyphens and lowercase, but needs validation)
+
+    [Link to Duplicate Title](#Duplicate Title) (Needs to resolve to duplicate-title or duplicate-title-1 correctly)
+
+    [Link to Explicit Duplicate](#Duplicate Title-1) (Should try to resolve to duplicate-title-1)
+
+Output: A complete Lua filter code block that can be saved as a .lua file and passed to Pandoc.
